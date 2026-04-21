@@ -1,15 +1,19 @@
-export interface GlobalAvailabilityDTO {
-  availabilityRate: number;
-  totalEvents: number;
-  offlineEvents: number;
+export interface DashboardStatsDTO {
+  uptimePercentage: number;
+  peakVisibility: number;
+  totalCriticalOutages: number;
 }
 
-export interface OfflineEventDataPointDTO {
+export interface HealthDataPointDTO {
+  hourBucket: string;
+  avgVisibility: number;
+  sampleCount: number;
+}
+
+export interface CriticalIncidentDTO {
+  id: number;
+  plotName: string;
+  metric: string;
   timestamp: string;
-  offlineCount: number;
-}
-
-export interface StoreOfflineRankingDTO {
-  storeName: string;
-  offlineCount: number;
+  statusValue: number;
 }
