@@ -1,7 +1,7 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-full">
-  <h3 class="text-lg font-bold text-gray-900 mb-1">Patrón de Estabilidad (24 Horas)</h3>
-  <p class="text-sm text-gray-500 mb-4">Promedio global de visibilidad por hora del día</p>
-  <div class="h-80 w-full" *ngIf="chartData">
+  <h3 class="text-2xl font-bold text-gray-900 mb-1">Patrón de Estabilidad (24 Horas)</h3>
+  <p class="text-base text-gray-500 mb-4">Promedio global de visibilidad por hora del día</p>
+  <div class="h-[400px] w-full" *ngIf="chartData">
     <canvas baseChart
       [data]="chartData"
       [options]="chartOptions"

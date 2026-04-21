@@ -1,21 +1,21 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-full overflow-hidden">
-  <h3 class="text-lg font-bold text-gray-900 mb-1">Mapa de Intensidad de Visibilidad</h3>
-  <p class="text-sm text-gray-500 mb-6">Promedio diario por hora. Naranja Brillante = Alta Visibilidad, Oscuro = Intermitencia/Caída.</p>
+  <h3 class="text-2xl font-bold text-gray-900 mb-1">Mapa de Intensidad de Visibilidad</h3>
+  <p class="text-base text-gray-500 mb-6">Promedio diario por hora. Naranja Brillante = Alta Visibilidad, Oscuro = Intermitencia/Caída.</p>
 
-  <div class="overflow-x-auto pb-4">
-    <table class="w-full text-center border-collapse text-xs">
+  <div class="w-full">
+    <table class="w-full text-center border-separate border-spacing-1 text-base table-fixed">
       <thead>
         <tr>
-          <th class="p-2 text-gray-400 font-semibold text-left sticky left-0 bg-white min-w-[80px] z-10">Día / Hora</th>
-          <th *ngFor="let h of hours" class="p-2 text-gray-400 font-semibold w-8">{{ h }}</th>
+          <th class="p-2 text-gray-600 font-bold text-left w-32">Día \ Hora</th>
+          <th *ngFor="let h of hours" class="p-2 text-gray-800 font-bold text-center text-lg">{{ h }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let date of dates">
-          <td class="p-2 text-gray-600 font-medium text-left sticky left-0 bg-white z-10 border-r border-gray-50">{{ date | date:'MMM dd' }}</td>
-          <td *ngFor="let h of hours" class="p-[2px]">
+          <td class="p-2 text-gray-700 font-bold text-left whitespace-nowrap">{{ date | date:'MMM dd' }}</td>
+          <td *ngFor="let h of hours" class="h-10">
             <div 
-              class="w-full h-8 rounded-sm transition-opacity hover:opacity-80 cursor-pointer"
+              class="w-full h-full rounded-md transition-opacity hover:opacity-80 cursor-pointer shadow-sm"
               [ngStyle]="{'background-color': getBgColor(date, h)}"
               [title]="'Fecha: ' + date + ' | Hora: ' + h + ' | Visibilidad: ' + (matrix[date] && matrix[date][h] ? matrix[date][h] : 0)"
             ></div>

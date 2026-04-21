@@ -26,13 +26,10 @@ export class IntensityHeatmapComponent implements OnChanges {
   }
 
   private processData(): void {
-    const hoursSet = new Set<string>();
     const datesSet = new Set<string>();
-    
     let maxVal = 0;
 
     this.data.forEach(d => {
-      hoursSet.add(d.hour);
       datesSet.add(d.date);
 
       if (!this.matrix[d.date]) {
@@ -45,7 +42,7 @@ export class IntensityHeatmapComponent implements OnChanges {
       }
     });
 
-    this.hours = Array.from(hoursSet).sort();
+    this.hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
     this.dates = Array.from(datesSet).sort();
     this.maxVisibility = maxVal > 0 ? maxVal : 1;
   }

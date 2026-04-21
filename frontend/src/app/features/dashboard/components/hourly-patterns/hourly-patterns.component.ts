@@ -22,12 +22,18 @@ export class HourlyPatternsComponent implements OnChanges {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { beginAtZero: true, ticks: { font: { size: 14 } } },
-      x: { grid: { display: false }, ticks: { font: { size: 14 } } }
+      y: { beginAtZero: true, ticks: { font: { size: 20 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 20 } } }
     },
     plugins: {
       legend: { display: false },
-      tooltip: { mode: 'index', intersect: false }
+      tooltip: { 
+        mode: 'index', 
+        intersect: false,
+        titleFont: { size: 20 },
+        bodyFont: { size: 18 },
+        padding: 12
+      }
     }
   };
 

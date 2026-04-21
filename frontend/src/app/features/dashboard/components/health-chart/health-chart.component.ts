@@ -32,13 +32,13 @@ export class HealthChartComponent implements OnChanges {
     scales: {
       y: {
         beginAtZero: true,
-        ticks: { font: { size: 20 } }
+        ticks: { font: { size: 22 } }
       },
       x: {
         grid: {
           display: false
         },
-        ticks: { font: { size: 20 } }
+        ticks: { font: { size: 22 } }
       }
     },
     plugins: {
@@ -47,7 +47,10 @@ export class HealthChartComponent implements OnChanges {
       },
       tooltip: {
         mode: 'index',
-        intersect: false
+        intersect: false,
+        titleFont: { size: 20 },
+        bodyFont: { size: 18 },
+        padding: 12
       }
     }
   };
