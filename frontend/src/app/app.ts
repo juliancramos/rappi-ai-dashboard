@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OfflineChartComponent } from './features/dashboard/components/offline-chart/offline-chart.component';
 import { TopStoresTableComponent } from './features/dashboard/components/top-stores-table/top-stores-table.component';
+import { ChatbotComponent } from './features/chat/components/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, OfflineChartComponent, TopStoresTableComponent],
+  imports: [RouterOutlet, OfflineChartComponent, TopStoresTableComponent, ChatbotComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
