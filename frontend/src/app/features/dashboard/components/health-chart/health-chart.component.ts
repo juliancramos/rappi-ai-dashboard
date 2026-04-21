@@ -9,18 +9,8 @@ import { HealthDataPointDTO } from '../../../../core/models/dashboard.model';
   standalone: true,
   imports: [CommonModule, BaseChartDirective],
   providers: [provideCharts(withDefaultRegisterables())],
-  template: `
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <h3 class="text-lg font-bold text-gray-900 mb-4">Tendencia de Visibilidad de Tiendas</h3>
-      <div class="h-80 w-full" *ngIf="chartData">
-        <canvas baseChart
-          [data]="chartData"
-          [options]="chartOptions"
-          [type]="chartType">
-        </canvas>
-      </div>
-    </div>
-  `
+  styleUrls: ['./health-chart.component.scss'],
+  templateUrl: './health-chart.component.html'
 })
 export class HealthChartComponent implements OnChanges {
   @Input() data: HealthDataPointDTO[] = [];
