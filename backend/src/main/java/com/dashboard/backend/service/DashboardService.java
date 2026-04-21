@@ -90,12 +90,11 @@ public class DashboardService {
 
    
     public DashboardStatsDTO getSystemHealthStats() {
-        Object[] counts = repository.countTotalAndOfflineRecords();
-        long total   = ((Number) counts[0]).longValue();
-        long offline = ((Number) counts[1]).longValue();
-        long online  = total - offline;
+        long total = repository.count();
+        long offline = repository.countByStatusValue(0L);
+        long online = total - offline;
 
-        double uptimePercentage = total > 0 ? (double) online / total * 100.0 : 0.0;
+        double uptimePercentage = total > 0 ? ((double) online / total) * 100.0 : 0.0;
 
         Long maxVal = repository.findMaxStatusValue();
         long peakVisibility = (maxVal != null) ? maxVal : 0L;
