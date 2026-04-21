@@ -69,10 +69,7 @@ export class HealthChartComponent implements OnChanges {
   }
 
   private updateChart(): void {
-    const labels = this.data.map(d => {
-      const date = new Date(d.hourBucket);
-      return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', hour: '2-digit' });
-    });
+    const labels = this.data.map(d => d.hourBucket);
 
     const values = this.data.map(d => d.avgVisibility);
 

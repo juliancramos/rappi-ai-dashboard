@@ -28,13 +28,13 @@ public interface AvailabilityLogRepository extends JpaRepository<AvailabilityLog
 
     @Query(value = """
             SELECT
-                SUBSTR(timestamp, 1, 13) || ':00:00' AS hour_bucket,
+                strftime('%Y-%m-%d %H:00', timestamp) AS hour_bucket,
                 AVG(status_value)                    AS avg_visibility,
                 COUNT(id)                            AS sample_count
             FROM   availability_logs
             WHERE  timestamp IS NOT NULL
             GROUP  BY hour_bucket
-            ORDER  BY hour_bucket ASC
+            ORDER  BY timestamp ASC
             """, nativeQuery = true)
     List<Object[]> findHealthSeriesGroupedByHour();
 
