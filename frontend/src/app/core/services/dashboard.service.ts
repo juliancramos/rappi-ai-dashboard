@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { GlobalAvailabilityDTO, OfflineEventDataPointDTO, StoreOfflineRankingDTO } from '../models/dashboard.model';
+import { DashboardStatsDTO, HealthDataPointDTO, CriticalIncidentDTO } from '../models/dashboard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +12,15 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
-  getGlobalAvailability(): Observable<GlobalAvailabilityDTO> {
-    return this.http.get<GlobalAvailabilityDTO>(`${this.apiUrl}/global-availability`);
+  getSystemHealthStats(): Observable<DashboardStatsDTO> {
+    return this.http.get<DashboardStatsDTO>(`${this.apiUrl}/stats`);
   }
 
-  getOfflineEventsSeries(): Observable<OfflineEventDataPointDTO[]> {
-    return this.http.get<OfflineEventDataPointDTO[]>(`${this.apiUrl}/offline-series`);
+  getFullHealthSeries(): Observable<HealthDataPointDTO[]> {
+    return this.http.get<HealthDataPointDTO[]>(`${this.apiUrl}/health-series`);
   }
 
-  getTopOfflineStores(): Observable<StoreOfflineRankingDTO[]> {
-    return this.http.get<StoreOfflineRankingDTO[]>(`${this.apiUrl}/top-offline-stores`);
+  getCriticalIncidentLog(): Observable<CriticalIncidentDTO[]> {
+    return this.http.get<CriticalIncidentDTO[]>(`${this.apiUrl}/incidents`);
   }
 }
-

@@ -1,48 +1,40 @@
-<!-- Rappi Dashboard — Full Page Layout -->
 <div class="min-h-screen bg-gray-50 flex flex-col font-sans">
-
-  <!-- Sticky Top Header -->
   <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
     <div class="h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="bg-rappi-500 text-white rounded-lg font-black text-xl leading-none flex items-center justify-center w-10 h-10 shadow-sm">
+        <div class="bg-[#FF4F00] text-white rounded-lg font-black text-xl leading-none flex items-center justify-center w-10 h-10 shadow-sm">
           R
         </div>
-        <h1 class="text-xl font-bold text-gray-900 tracking-tight">Availability Dashboard</h1>
+        <h1 class="text-xl font-bold text-gray-900 tracking-tight">System Health Monitor</h1>
       </div>
-      <div class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full hidden sm:block">
+      <div class="text-sm font-medium text-[#FF4F00] bg-orange-50 px-3 py-1.5 rounded-full hidden sm:block">
         Métricas en Vivo
       </div>
     </div>
   </header>
 
-  <!-- Body: Dashboard (left) + AI Sidebar (right) -->
   <div class="flex flex-1 overflow-hidden">
-
-    <!-- Main Dashboard Panel (75%) -->
     <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-8 min-w-0">
       <div class="mb-8">
-        <h2 class="text-2xl font-bold text-gray-900">Resumen de Operaciones</h2>
-        <p class="text-gray-500 mt-1">Monitoreo de intermitencias y estabilidad por tienda.</p>
+        <h2 class="text-2xl font-bold text-gray-900">Salud del Sistema</h2>
+        <p class="text-gray-500 mt-1">Monitoreo de visibilidad de tiendas y detección de caídas.</p>
       </div>
 
-      <!-- Dashboard Widget Grid -->
+      <app-kpi-cards [stats]="stats"></app-kpi-cards>
+
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div class="xl:col-span-2">
-          <app-offline-chart></app-offline-chart>
+          <app-health-chart [data]="healthSeries"></app-health-chart>
         </div>
         <div class="xl:col-span-1">
-          <app-top-stores-table></app-top-stores-table>
+          <app-incident-log [incidents]="incidents"></app-incident-log>
         </div>
       </div>
     </main>
 
-    <!-- AI Chatbot Sidebar (25%) — hidden on small screens -->
     <aside class="hidden lg:flex flex-col w-80 xl:w-96 flex-shrink-0 border-l border-gray-200 bg-white">
       <app-chatbot></app-chatbot>
     </aside>
-
   </div>
 </div>
-
 <router-outlet></router-outlet>
