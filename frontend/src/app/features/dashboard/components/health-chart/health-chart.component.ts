@@ -41,12 +41,14 @@ export class HealthChartComponent implements OnChanges {
     },
     scales: {
       y: {
-        beginAtZero: true
+        beginAtZero: true,
+        ticks: { font: { size: 14 } }
       },
       x: {
         grid: {
           display: false
-        }
+        },
+        ticks: { font: { size: 14 } }
       }
     },
     plugins: {

@@ -50,11 +50,11 @@ interface ChatMessage {
           <p class="text-xs text-gray-400 mt-1 leading-relaxed">Pregúntame sobre la disponibilidad, intermitencias o el rendimiento de las tiendas Rappi.</p>
         </div>
         <!-- Example prompts -->
-        <div class="flex flex-col gap-2 w-full mt-1">
+        <div class="flex flex-col gap-3 w-full mt-2">
           <button
             *ngFor="let prompt of examplePrompts"
             (click)="usePrompt(prompt)"
-            class="text-left text-xs text-gray-500 border border-gray-200 bg-white hover:border-rappi-500 hover:text-rappi-600 rounded-lg px-3 py-2 transition-colors cursor-pointer"
+            class="text-left text-sm font-medium text-gray-500 border border-gray-200 bg-white hover:border-[#FF4F00] hover:text-[#FF4F00] rounded-xl px-4 py-3 transition-colors cursor-pointer"
           >
             {{ prompt }}
           </button>
@@ -80,10 +80,10 @@ interface ChatMessage {
 
           <!-- Bubble -->
           <div
-            class="max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm"
+            class="max-w-[85%] px-5 py-4 rounded-2xl text-lg leading-relaxed shadow-sm"
             [ngClass]="{
-              'bg-rappi-500 text-white rounded-tr-sm': msg.role === 'user',
-              'bg-white text-gray-800 rounded-tl-sm border border-gray-100': msg.role === 'bot'
+              'bg-[#FF4F00] text-white rounded-tr-sm': msg.role === 'user',
+              'bg-white text-gray-900 rounded-tl-sm border border-gray-200': msg.role === 'bot'
             }"
           >
             {{ msg.content }}
@@ -107,8 +107,8 @@ interface ChatMessage {
     </div>
 
     <!-- Input Area — pinned to bottom -->
-    <div class="flex-shrink-0 px-4 py-3 border-t border-gray-100 bg-white">
-      <form (ngSubmit)="sendMessage()" class="flex items-center gap-2">
+    <div class="flex-shrink-0 px-6 py-5 border-t border-gray-200 bg-white shadow-md z-10 relative">
+      <form (ngSubmit)="sendMessage()" class="flex items-center gap-4">
         <input
           id="chat-input"
           [(ngModel)]="inputMessage"
@@ -117,16 +117,16 @@ interface ChatMessage {
           placeholder="Pregunta sobre las tiendas..."
           [disabled]="isThinking"
           autocomplete="off"
-          class="flex-1 text-sm px-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rappi-500/30 focus:border-rappi-500 transition-all placeholder-gray-400 disabled:opacity-60"
+          class="flex-1 text-lg px-5 py-4 rounded-xl border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FF4F00]/40 focus:border-[#FF4F00] transition-all placeholder-gray-400 disabled:opacity-60 text-gray-900"
         />
         <button
           id="chat-send-btn"
           type="submit"
           [disabled]="isThinking || !inputMessage.trim()"
-          class="flex-shrink-0 w-9 h-9 rounded-xl bg-rappi-500 text-white flex items-center justify-center hover:bg-rappi-600 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105"
+          class="flex-shrink-0 w-14 h-14 rounded-xl bg-[#FF4F00] text-white flex items-center justify-center hover:bg-[#E64600] transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 shadow-sm"
           aria-label="Enviar"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
           </svg>
         </button>

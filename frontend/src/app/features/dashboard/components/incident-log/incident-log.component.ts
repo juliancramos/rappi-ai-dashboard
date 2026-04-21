@@ -13,26 +13,26 @@ import { CriticalIncidentDTO } from '../../../../core/models/dashboard.model';
         <p class="text-sm text-gray-500">Eventos con cero tiendas visibles</p>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-gray-50 text-gray-600 font-medium border-b border-gray-100">
+        <table class="w-full text-left text-base">
+          <thead class="bg-gray-50 text-gray-600 font-semibold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-3">Fecha y Hora</th>
-              <th class="px-6 py-3">Métrica</th>
-              <th class="px-6 py-3">Valor</th>
+              <th class="px-8 py-4">Fecha y Hora</th>
+              <th class="px-8 py-4">Métrica</th>
+              <th class="px-8 py-4">Valor</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
             <tr *ngFor="let incident of incidents" class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4 font-medium text-gray-900">{{ incident.timestamp | date:'medium' }}</td>
-              <td class="px-6 py-4 text-gray-600">{{ incident.metric }}</td>
-              <td class="px-6 py-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-[#FF4F00]">
+              <td class="px-8 py-5 font-semibold text-gray-900">{{ incident.timestamp | date:'medium' }}</td>
+              <td class="px-8 py-5 text-gray-600">{{ incident.metric }}</td>
+              <td class="px-8 py-5">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-[#FF4F00]">
                   {{ incident.statusValue }}
                 </span>
               </td>
             </tr>
             <tr *ngIf="incidents.length === 0">
-              <td colspan="3" class="px-6 py-8 text-center text-gray-500">
+              <td colspan="3" class="px-8 py-10 text-center text-gray-500 text-lg">
                 No se registraron incidentes críticos.
               </td>
             </tr>
