@@ -23,6 +23,14 @@ public class AiConfig {
                 .build();
     }
 
+    @Bean
+    public com.dashboard.backend.service.AiAssistant aiAssistant(ChatLanguageModel chatLanguageModel, com.dashboard.backend.tool.DatabaseTool databaseTool) {
+        return dev.langchain4j.service.AiServices.builder(com.dashboard.backend.service.AiAssistant.class)
+                .chatLanguageModel(chatLanguageModel)
+                .tools(databaseTool)
+                .build();
+    }
+
     @PostConstruct
     public void validateModelInitialization() {
         log.info("Gemini Model initialized successfully.");
