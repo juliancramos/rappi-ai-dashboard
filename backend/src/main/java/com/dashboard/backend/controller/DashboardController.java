@@ -66,15 +66,15 @@ public class DashboardController {
         return ResponseEntity.ok(service.getCriticalIncidentLog());
     }
 
-    @GetMapping("/patterns")
+    @GetMapping("/analysis/patterns")
     public ResponseEntity<List<HourlyPatternDTO>> getHourlyPatterns() {
-        log.info("GET /api/dashboard/patterns");
+        log.info("GET /api/dashboard/analysis/patterns");
         return ResponseEntity.ok(service.getHourlyPatterns());
     }
 
-    @GetMapping("/intensity-grid")
+    @GetMapping("/analysis/intensity-grid")
     public ResponseEntity<List<HeatmapDataPointDTO>> getIntensityGrid() {
-        log.info("GET /api/dashboard/intensity-grid");
+        log.info("GET /api/dashboard/analysis/intensity-grid");
         return ResponseEntity.ok(service.getIntensityGrid());
     }
 }
