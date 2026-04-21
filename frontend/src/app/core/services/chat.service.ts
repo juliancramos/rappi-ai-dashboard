@@ -2,14 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-export interface ChatRequestDTO {
-  message: string;
-}
-
-export interface ChatResponseDTO {
-  response: string;
-}
+import { ChatRequestDTO, ChatResponseDTO } from '../models/chat.model';
 
 @Injectable({
   providedIn: 'root'
