@@ -6,6 +6,8 @@ import com.dashboard.backend.dto.GlobalAvailabilityDTO;
 import com.dashboard.backend.dto.HealthDataPointDTO;
 import com.dashboard.backend.dto.OfflineEventDataPointDTO;
 import com.dashboard.backend.dto.StoreOfflineRankingDTO;
+import com.dashboard.backend.dto.HourlyPatternDTO;
+import com.dashboard.backend.dto.HeatmapDataPointDTO;
 import com.dashboard.backend.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +64,18 @@ public class DashboardController {
     public ResponseEntity<List<CriticalIncidentDTO>> getCriticalIncidentLog() {
         log.info("GET /api/dashboard/incidents");
         return ResponseEntity.ok(service.getCriticalIncidentLog());
+    }
+
+    @GetMapping("/patterns")
+    public ResponseEntity<List<HourlyPatternDTO>> getHourlyPatterns() {
+        log.info("GET /api/dashboard/patterns");
+        return ResponseEntity.ok(service.getHourlyPatterns());
+    }
+
+    @GetMapping("/intensity-grid")
+    public ResponseEntity<List<HeatmapDataPointDTO>> getIntensityGrid() {
+        log.info("GET /api/dashboard/intensity-grid");
+        return ResponseEntity.ok(service.getIntensityGrid());
     }
 }
 

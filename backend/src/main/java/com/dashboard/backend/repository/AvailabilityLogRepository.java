@@ -40,5 +40,28 @@ public interface AvailabilityLogRepository extends JpaRepository<AvailabilityLog
 
     @Query(value = "SELECT id, plot_name, metric, timestamp, status_value FROM availability_logs WHERE status_value = 0 ORDER BY timestamp ASC", nativeQuery = true)
     List<Object[]> findCriticalIncidents();
+
+    @Query(value = """
+            SELECT
+                strftime('%H', timestamp) AS hour_of_day,
+                AVG(status_value)         AS avg_visibility
+            FROM   availability_logs
+            WHERE  timestamp IS NOT NULL
+            GROUP  BY hour_of_day
+            ORDER  BY hour_of_day ASC
+            """, nativeQuery = true)
+    List<Object[]> findHourlyPatterns();
+
+    @Query(value = """
+            SELECT
+                strftime('%Y-%m-%d', timestamp) AS date_val,
+                strftime('%H', timestamp)       AS hour_val,
+                AVG(status_value)               AS avg_visibility
+            FROM   availability_logs
+            WHERE  timestamp IS NOT NULL
+            GROUP  BY date_val, hour_val
+            ORDER  BY date_val ASC, hour_val ASC
+            """, nativeQuery = true)
+    List<Object[]> findIntensityGrid();
 }
 
