@@ -42,13 +42,13 @@ export class HealthChartComponent implements OnChanges {
     scales: {
       y: {
         beginAtZero: true,
-        ticks: { font: { size: 14 } }
+        ticks: { font: { size: 20 } }
       },
       x: {
         grid: {
           display: false
         },
-        ticks: { font: { size: 14 } }
+        ticks: { font: { size: 20 } }
       }
     },
     plugins: {
@@ -73,7 +73,7 @@ export class HealthChartComponent implements OnChanges {
       const date = new Date(d.hourBucket);
       return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', hour: '2-digit' });
     });
-    
+
     const values = this.data.map(d => d.avgVisibility);
 
     this.chartData = {
