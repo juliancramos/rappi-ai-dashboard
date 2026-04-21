@@ -26,6 +26,12 @@
         <div class="w-full">
           <app-health-chart [data]="healthSeries"></app-health-chart>
         </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 w-full">
+          <app-hourly-patterns [data]="hourlyPatterns"></app-hourly-patterns>
+          <app-intensity-heatmap [data]="intensityGrid"></app-intensity-heatmap>
+        </div>
+
         <div class="w-full">
           <app-incident-log [incidents]="incidents"></app-incident-log>
         </div>

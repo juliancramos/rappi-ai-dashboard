@@ -17,3 +17,14 @@ export interface CriticalIncidentDTO {
   timestamp: string;
   statusValue: number;
 }
+
+export interface HourlyPatternDTO {
+  hourOfDay: string;
+  averageVisibility: number;
+}
+
+export interface HeatmapDataPointDTO {
+  date: string;
+  hour: string;
+  averageVisibility: number;
+}
