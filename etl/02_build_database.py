@@ -42,9 +42,6 @@ def main():
     df_unified = pd.concat(dfs, ignore_index=True)
     df_unified.drop_duplicates(inplace=True)
 
-    time_keywords = ['date', 'time', 'timestamp', 'created_at']
-    # Removing to_datetime coercion so raw strings are pushed to SQLite
-
     # JPA conventions (Primary key and Snake Case)
     df_unified.reset_index(drop=True, inplace=True)
     df_unified.reset_index(inplace=True)
