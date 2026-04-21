@@ -18,4 +18,27 @@ public interface AvailabilityLogRepository extends JpaRepository<AvailabilityLog
 
     @Query("SELECT a.plotName, COUNT(a) as offline_count FROM AvailabilityLog a WHERE a.statusValue = 0 GROUP BY a.plotName ORDER BY offline_count DESC")
     List<Object[]> findTopStoresByOfflineEvents(Pageable pageable);
+
+   
+    @Query(value = "SELECT MAX(status_value) FROM availability_logs", nativeQuery = true)
+    Long findMaxStatusValue();
+
+    @Query(value = "SELECT COUNT(*) as total, SUM(CASE WHEN status_value = 0 THEN 1 ELSE 0 END) as offline FROM availability_logs", nativeQuery = true)
+    Object[] countTotalAndOfflineRecords();
+
+    @Query(value = """
+            SELECT
+                SUBSTR(timestamp, 1, 13) || ':00:00' AS hour_bucket,
+                AVG(status_value)                    AS avg_visibility,
+                COUNT(id)                            AS sample_count
+            FROM   availability_logs
+            WHERE  timestamp IS NOT NULL
+            GROUP  BY hour_bucket
+            ORDER  BY hour_bucket ASC
+            """, nativeQuery = true)
+    List<Object[]> findHealthSeriesGroupedByHour();
+
+    @Query(value = "SELECT id, plot_name, metric, timestamp, status_value FROM availability_logs WHERE status_value = 0 ORDER BY timestamp ASC", nativeQuery = true)
+    List<Object[]> findCriticalIncidents();
 }
+

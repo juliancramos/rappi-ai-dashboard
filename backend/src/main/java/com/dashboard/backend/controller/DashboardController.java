@@ -1,6 +1,9 @@
 package com.dashboard.backend.controller;
 
+import com.dashboard.backend.dto.CriticalIncidentDTO;
+import com.dashboard.backend.dto.DashboardStatsDTO;
 import com.dashboard.backend.dto.GlobalAvailabilityDTO;
+import com.dashboard.backend.dto.HealthDataPointDTO;
 import com.dashboard.backend.dto.OfflineEventDataPointDTO;
 import com.dashboard.backend.dto.StoreOfflineRankingDTO;
 import com.dashboard.backend.service.DashboardService;
@@ -18,25 +21,47 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class DashboardController {
 
     private final DashboardService service;
 
     @GetMapping("/global-availability")
     public ResponseEntity<GlobalAvailabilityDTO> getGlobalAvailability() {
-        log.info("Fetching global availability metrics");
+        log.info("GET /api/dashboard/global-availability");
         return ResponseEntity.ok(service.getGlobalAvailability());
     }
 
     @GetMapping("/offline-series")
     public ResponseEntity<List<OfflineEventDataPointDTO>> getOfflineEventsSeries() {
-        log.info("Fetching offline event time-series data");
+        log.info("GET /api/dashboard/offline-series");
         return ResponseEntity.ok(service.getOfflineEventsSeries());
     }
 
     @GetMapping("/top-offline-stores")
     public ResponseEntity<List<StoreOfflineRankingDTO>> getTopStoresByOfflineEvents() {
-        log.info("Fetching ranking for top stores with offline events");
+        log.info("GET /api/dashboard/top-offline-stores");
         return ResponseEntity.ok(service.getTopStoresByOfflineEvents());
     }
+
+
+    @GetMapping("/stats")
+    public ResponseEntity<DashboardStatsDTO> getSystemHealthStats() {
+        log.info("GET /api/dashboard/stats");
+        return ResponseEntity.ok(service.getSystemHealthStats());
+    }
+
+
+    @GetMapping("/health-series")
+    public ResponseEntity<List<HealthDataPointDTO>> getFullHealthSeries() {
+        log.info("GET /api/dashboard/health-series");
+        return ResponseEntity.ok(service.getFullHealthSeries());
+    }
+
+    @GetMapping("/incidents")
+    public ResponseEntity<List<CriticalIncidentDTO>> getCriticalIncidentLog() {
+        log.info("GET /api/dashboard/incidents");
+        return ResponseEntity.ok(service.getCriticalIncidentLog());
+    }
 }
+
