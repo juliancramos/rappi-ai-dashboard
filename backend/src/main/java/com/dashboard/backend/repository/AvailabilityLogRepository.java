@@ -13,7 +13,7 @@ public interface AvailabilityLogRepository extends JpaRepository<AvailabilityLog
 
     long countByStatusValue(Long statusValue);
 
-    @Query(value = "SELECT SUBSTR(timestamp, 1, 15) as day, COUNT(id) FROM availability_logs WHERE status_value = 0 AND timestamp IS NOT NULL GROUP BY day", nativeQuery = true)
+    @Query(value = "SELECT SUBSTR(timestamp, 1, 10) as day, COUNT(id) FROM availability_logs WHERE status_value = 0 AND timestamp IS NOT NULL GROUP BY day ORDER BY day ASC", nativeQuery = true)
     List<Object[]> countOfflineEventsGroupedByDay();
 
     @Query("SELECT a.plotName, COUNT(a) as offline_count FROM AvailabilityLog a WHERE a.statusValue = 0 GROUP BY a.plotName ORDER BY offline_count DESC")

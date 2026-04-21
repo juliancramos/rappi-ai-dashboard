@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -25,38 +24,45 @@ public class DashboardService {
     private final AvailabilityLogRepository repository;
 
     public GlobalAvailabilityDTO getGlobalAvailability() {
-        long totalEvents = repository.count();
-        long onlineEvents = repository.countByStatusValue(1L);
-        long offlineEvents = totalEvents - onlineEvents;
+        long totalEvents  = repository.count();
+        long offlineEvents = repository.countByStatusValue(0L);
+        long onlineEvents  = totalEvents - offlineEvents;
 
-        double availabilityRate = totalEvents > 0 ? (double) onlineEvents / totalEvents * 100.0 : 0.0;
-        
+        double availabilityRate = totalEvents > 0
+                ? (double) onlineEvents / totalEvents * 100.0
+                : 0.0;
+
         return new GlobalAvailabilityDTO(availabilityRate, totalEvents, offlineEvents);
     }
 
     public List<OfflineEventDataPointDTO> getOfflineEventsSeries() {
         List<Object[]> results = repository.countOfflineEventsGroupedByDay();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd yyyy", Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
         return results.stream().map(row -> {
             String dayStr = (String) row[0];
-            if (dayStr == null || dayStr.trim().isEmpty()) {
-                log.warn("Null or empty date found. Skipping.");
+            if (dayStr == null || dayStr.isBlank()) {
+                log.warn("Null or empty date string in offline-series result — skipping row.");
                 return null;
             }
-            
+
+            // status_value = 0 rows are always counted; null safety on the count column.
             Number count = (Number) row[1];
+            if (count == null) {
+                log.warn("Null count for date '{}' — skipping row.", dayStr);
+                return null;
+            }
+
             try {
-                return new OfflineEventDataPointDTO(
-                        LocalDate.parse(dayStr.trim(), formatter).atStartOfDay(),
-                        count.longValue()
-                );
+                LocalDate date = LocalDate.parse(dayStr.trim(), formatter);
+                return new OfflineEventDataPointDTO(date.atStartOfDay(), count.longValue());
             } catch (Exception e) {
-                log.warn("Failed to parse date string: '{}'. Skipping record.", dayStr);
+                log.warn("Failed to parse date string '{}': {} — skipping row.", dayStr, e.getMessage());
                 return null;
             }
         })
         .filter(Objects::nonNull)
+        // DB already orders by day ASC; .sorted() is a defensive safety net.
         .sorted(Comparator.comparing(OfflineEventDataPointDTO::timestamp))
         .collect(Collectors.toList());
     }
