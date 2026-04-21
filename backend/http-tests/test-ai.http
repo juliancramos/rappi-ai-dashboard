@@ -1,0 +1,8 @@
+### Test the LLM Text-to-SQL Feature
+### This endpoint queries the AI assistant expecting it to invoke the DatabaseTool and return a Spanish summary.
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "¿Cuáles son las 5 tiendas con mayor cantidad de eventos offline?"
+}
