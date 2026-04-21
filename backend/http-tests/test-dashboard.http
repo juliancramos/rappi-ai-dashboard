@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:8080/api/dashboard
+
+### Fetch global availability metrics (overall percentage and event counts)
+GET {{baseUrl}}/global-availability
+
+###
+
+### Fetch offline event time-series data grouped by day
+GET {{baseUrl}}/offline-series
+
+###
+
+### Fetch the top 5 stores with the highest number of offline events
+GET {{baseUrl}}/top-offline-stores
