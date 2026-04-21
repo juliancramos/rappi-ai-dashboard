@@ -43,12 +43,7 @@ def main():
     df_unified.drop_duplicates(inplace=True)
 
     time_keywords = ['date', 'time', 'timestamp', 'created_at']
-    for col in df_unified.columns:
-        if any(kw in str(col).lower() for kw in time_keywords):
-            try:
-                df_unified[col] = pd.to_datetime(df_unified[col], errors='coerce')
-            except Exception:
-                pass
+    # Removing to_datetime coercion so raw strings are pushed to SQLite
 
     # JPA conventions (Primary key and Snake Case)
     df_unified.reset_index(drop=True, inplace=True)
