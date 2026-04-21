@@ -4,43 +4,45 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def main():
-    base_dir = os.path.dirname(__file__)
+    # Strict absolute paths to avoid context issues
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(base_dir, '..', 'data')
-    backend_resources_dir = os.path.join(base_dir, '..', 'backend', 'src', 'main', 'resources')
-    db_path = os.path.join(backend_resources_dir, 'rappi_logs.db')
+    backend_dir = os.path.join(base_dir, '..', 'backend')
+    db_path = os.path.join(backend_dir, 'rappi_logs.db')
 
-    # Extraction
-    csv_files = glob.glob(os.path.join(data_dir, '*.csv'))
+    # Convert to SQLAlchemy-compatible format
+    db_path_sql = db_path.replace('\\', '/')
+
+    print(f"Searching for CSVs in: {data_dir}")
+
+    # Recursive extraction
+    csv_files = glob.glob(os.path.join(data_dir, '**', '*.csv'), recursive=True)
     
     if not csv_files:
-        print("No CSV files found.")
+        print("Error: No CSV files found. Make sure the files are unzipped in the /data folder")
         return
 
     dfs = []
     for f in csv_files:
         try:
             df = pd.read_csv(f)
-            id_vars = [col for col in df.columns if 'GMT' not in col and col not in ['Plot name', 'metric (sf_metric)', 'Value Prefix', 'Value Suffix'] or col in ['Plot name', 'metric (sf_metric)', 'Value Prefix', 'Value Suffix']]
+            # Assume the first 4 columns are the base columns (id_vars)
             id_vars = list(df.columns[:4])
             df_melted = df.melt(id_vars=id_vars, var_name='timestamp', value_name='value')
             dfs.append(df_melted)
         except Exception as e:
             print(f"Error reading {f}: {e}")
 
+    if not dfs:
+        print("Error: No DataFrame could be processed.")
+        return
+
     # Transformation
+    print("Concatenating and cleaning data...")
     df_unified = pd.concat(dfs, ignore_index=True)
     df_unified.drop_duplicates(inplace=True)
 
-    time_keywords = ['date', 'time', 'timestamp', 'created_at']
-    for col in df_unified.columns:
-        if any(kw in str(col).lower() for kw in time_keywords):
-            try:
-                df_unified[col] = pd.to_datetime(df_unified[col], errors='coerce')
-            except Exception:
-                pass
-
-
-    # Conform to JPA conventions
+    # JPA conventions (Primary key and Snake Case)
     df_unified.reset_index(drop=True, inplace=True)
     df_unified.reset_index(inplace=True)
     df_unified.rename(columns={'index': 'id'}, inplace=True)
@@ -48,15 +50,16 @@ def main():
     df_unified.columns = ['id', 'plot_name', 'metric', 'value_prefix', 'value_suffix', 'timestamp', 'status_value']
 
     # Load
-    os.makedirs(backend_resources_dir, exist_ok=True)
+    print("Saving to SQLite database...")
+    os.makedirs(backend_dir, exist_ok=True)
     
-    engine = create_engine(f"sqlite:///{db_path}")
+    engine = create_engine(f"sqlite:///{db_path_sql}")
     df_unified.to_sql('availability_logs', engine, if_exists='replace', index=False)
 
-    print(f"Total files processed: {len(csv_files)}")
-    print(f"Final records shape: {df_unified.shape[0]} rows, {df_unified.shape[1]} columns")
-    print("\nFinal Schema saved to database:")
-    print(df_unified.dtypes)
+    print("-" * 30)
+    print(f"Processed files: {len(csv_files)}")
+    print(f"Final records: {df_unified.shape[0]} rows, {df_unified.shape[1]} columns")
+    print(f"Database successfully saved at: {db_path}")
 
 if __name__ == "__main__":
     main()
