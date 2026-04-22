@@ -6,6 +6,8 @@ import com.dashboard.backend.dto.GlobalAvailabilityDTO;
 import com.dashboard.backend.dto.HealthDataPointDTO;
 import com.dashboard.backend.dto.OfflineEventDataPointDTO;
 import com.dashboard.backend.dto.StoreOfflineRankingDTO;
+import com.dashboard.backend.dto.HourlyPatternDTO;
+import com.dashboard.backend.dto.HeatmapDataPointDTO;
 import com.dashboard.backend.repository.AvailabilityLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -161,5 +163,31 @@ public class DashboardService {
 
         log.info("getCriticalIncidentLog: {} critical incidents (status_value=0) returned.", incidents.size());
         return incidents;
+    }
+
+    public List<HourlyPatternDTO> getHourlyPatterns() {
+        List<Object[]> rows = repository.findHourlyPatterns();
+        java.util.Map<String, Double> dbMap = rows.stream()
+                .filter(r -> r[0] != null && r[1] != null)
+                .collect(Collectors.toMap(
+                        r -> (String) r[0],
+                        r -> ((Number) r[1]).doubleValue()
+                ));
+
+        return java.util.stream.IntStream.range(0, 24).mapToObj(hour -> {
+            String hourStr = String.format("%02d", hour);
+            return new HourlyPatternDTO(hourStr, dbMap.getOrDefault(hourStr, 0.0));
+        }).collect(Collectors.toList());
+    }
+
+    public List<HeatmapDataPointDTO> getIntensityGrid() {
+        List<Object[]> rows = repository.findIntensityGrid();
+        return rows.stream().map(row -> {
+            String date = (String) row[0];
+            String hour = (String) row[1];
+            Number avg  = (Number) row[2];
+            if (date == null || hour == null || avg == null) return null;
+            return new HeatmapDataPointDTO(date, hour, avg.doubleValue());
+        }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 }

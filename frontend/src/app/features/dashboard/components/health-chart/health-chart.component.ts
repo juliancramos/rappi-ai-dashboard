@@ -9,18 +9,8 @@ import { HealthDataPointDTO } from '../../../../core/models/dashboard.model';
   standalone: true,
   imports: [CommonModule, BaseChartDirective],
   providers: [provideCharts(withDefaultRegisterables())],
-  template: `
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <h3 class="text-lg font-bold text-gray-900 mb-4">Tendencia de Visibilidad de Tiendas</h3>
-      <div class="h-80 w-full" *ngIf="chartData">
-        <canvas baseChart
-          [data]="chartData"
-          [options]="chartOptions"
-          [type]="chartType">
-        </canvas>
-      </div>
-    </div>
-  `
+  styleUrls: ['./health-chart.component.scss'],
+  templateUrl: './health-chart.component.html'
 })
 export class HealthChartComponent implements OnChanges {
   @Input() data: HealthDataPointDTO[] = [];
@@ -42,13 +32,13 @@ export class HealthChartComponent implements OnChanges {
     scales: {
       y: {
         beginAtZero: true,
-        ticks: { font: { size: 20 } }
+        ticks: { font: { size: 22 } }
       },
       x: {
         grid: {
           display: false
         },
-        ticks: { font: { size: 20 } }
+        ticks: { font: { size: 22 } }
       }
     },
     plugins: {
@@ -57,7 +47,10 @@ export class HealthChartComponent implements OnChanges {
       },
       tooltip: {
         mode: 'index',
-        intersect: false
+        intersect: false,
+        titleFont: { size: 20 },
+        bodyFont: { size: 18 },
+        padding: 12
       }
     }
   };
