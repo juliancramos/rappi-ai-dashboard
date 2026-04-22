@@ -63,4 +63,28 @@ export class IntensityHeatmapComponent implements OnChanges {
 
     return `rgb(${r}, ${g}, ${b})`;
   }
+
+  // Tooltip State
+  public tooltipVisible = false;
+  public tooltipX = 0;
+  public tooltipY = 0;
+  public tooltipData: { date: string; hour: string; value: number } | null = null;
+
+  showTooltip(event: MouseEvent, date: string, hour: string): void {
+    const val = this.matrix[date]?.[hour] || 0;
+    this.tooltipData = { date, hour, value: val };
+    this.tooltipVisible = true;
+    this.moveTooltip(event);
+  }
+
+  hideTooltip(): void {
+    this.tooltipVisible = false;
+    this.tooltipData = null;
+  }
+
+  moveTooltip(event: MouseEvent): void {
+    if (!this.tooltipVisible) return;
+    this.tooltipX = event.clientX + 15;
+    this.tooltipY = event.clientY + 15;
+  }
 }
